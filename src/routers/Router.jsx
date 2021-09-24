@@ -7,7 +7,8 @@ import { PrivateRouter } from "./privateRouter";
 import { PublicRouter } from "./publicRouter";
 import jwtDecode from "jwt-decode";
 import { useDispatch } from "react-redux";
-import { login } from "../redux/actions/authAction";
+import { login, logout } from "../redux/actions/authAction";
+import FavoriteReposotories from "../pages/FavoriteReposotories";
 const Routers = () => {
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
@@ -16,12 +17,19 @@ const Routers = () => {
     if (user) {
       dispatch(login(user));
     }
+  } else {
+    dispatch(logout());
   }
   return (
     <Router>
       <NavBar />
       <Switch>
         <PrivateRouter exact path="/" component={Repositories} />
+        <PrivateRouter
+          exact
+          path="/favorites"
+          component={FavoriteReposotories}
+        />
         <PublicRouter exact path="/auth" component={Login} />
         <Redirect to="/" />
       </Switch>

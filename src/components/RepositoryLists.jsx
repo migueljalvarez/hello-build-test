@@ -10,7 +10,9 @@ const RepositoryLists = ({ repositories }) => {
           <CardRepository key={repository.id} repository={repository} />
         ))
       ) : (
-        <></>
+        <>
+          <h3>This account not have repositories</h3>
+        </>
       )}
     </Container>
   );

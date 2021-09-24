@@ -20,8 +20,12 @@ const NavBar = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav>
+
               <Link className="nav-link" to="/repositories">
                 Repositories
+              </Link>
+              <Link className="nav-link" to="/favorites">
+                Favorites
               </Link>
               {!isAuthenticated ? (
                 <Link className="nav-link" to="/auth">

@@ -1,8 +1,7 @@
 import axios from "axios";
-const token = localStorage.getItem("github-access-token");
-const instance = axios.create({
+const instance = new axios.create({
   headers: {
-    Authorization: `Bearer ${token}`,
+    Authorization: `Bearer ${localStorage.getItem("github-access-token")}`,
     "Content-Type": "application/json",
   },
 });

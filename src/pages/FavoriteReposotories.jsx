@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getRepositories } from "../redux/actions/repositioryAction";
 import UserInfo from "../components/UserInfo";
 const limit = 10;
-const Repositories = () => {
+const FavoriteReposotories = () => {
   const [cursor, setCursor] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [prev, setPrev] = useState("");
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const Repositories = () => {
     setPrev(repositories.startCursor);
     setCursor(repositories.endCursor);
     setPage(currentPage);
+    setLoading(true);
   };
 
   const handlePrevCursor = () => {
@@ -30,13 +32,18 @@ const Repositories = () => {
       setPage(1);
       setCursor(null);
     }
+    setLoading(true);
   };
 
   useEffect(() => {
-    dispatch(getRepositories(limit, cursor));
+    if (loading) {
+      dispatch(getRepositories(limit, cursor));
+      if (repositories.length > 0) {
+        setLoading(false);
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cursor, dispatch]);
-
+  }, [cursor, dispatch, loading]);
   return (
     <Container className="my-5">
       <UserInfo repositories={repositories.totalCount} />
@@ -71,4 +78,4 @@ const Repositories = () => {
   );
 };
 
-export default Repositories;
+export default FavoriteReposotories;
