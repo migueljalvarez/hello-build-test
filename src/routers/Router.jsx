@@ -1,6 +1,5 @@
 import { Switch, BrowserRouter as Router, Redirect } from "react-router-dom";
 import Login from "../pages/Login";
-import Signup from "../pages/Signup";
 import NavBar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Repositories from "../pages/Repositories";
@@ -23,8 +22,7 @@ const Routers = () => {
       <NavBar />
       <Switch>
         <PrivateRouter exact path="/" component={Repositories} />
-        <PublicRouter exact path="/login" component={Login} />
-        <PublicRouter exact path="/signup" component={Signup} />
+        <PublicRouter exact path="/auth" component={Login} />
         <Redirect to="/" />
       </Switch>
       <Footer />

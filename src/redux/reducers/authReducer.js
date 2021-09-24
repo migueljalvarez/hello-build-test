@@ -10,9 +10,10 @@ const authReducer = (state = initialState, action) => {
         isAuthenticated: true,
         ...action.payload,
       };
-    case types.authenticated:
+    case types.logout:
+      localStorage.clear();
       return {
-        isAuthenticated: true,
+        isAuthenticated: false,
       };
     default:
       return state;

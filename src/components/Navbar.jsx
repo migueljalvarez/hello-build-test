@@ -1,8 +1,15 @@
 import React from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../redux/actions/authAction";
 const NavBar = () => {
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   return (
     <div>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -16,12 +23,20 @@ const NavBar = () => {
               <Link className="nav-link" to="/repositories">
                 Repositories
               </Link>
-              <Link className="nav-link" to="/login">
-                Login
-              </Link>
-              <Link className="nav-link" to="/signup">
-                Signup
-              </Link>
+              {!isAuthenticated ? (
+                <Link className="nav-link" to="/auth">
+                  {"Auth"}
+                </Link>
+              ) : (
+                <Link
+                  className="nav-link"
+                  role="button"
+                  to="/"
+                  onClick={handleLogout}
+                >
+                  {"Logout"}
+                </Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

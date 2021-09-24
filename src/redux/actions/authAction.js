@@ -4,6 +4,7 @@ import {
   auth,
   signInWithPopup,
   GithubAuthProvider,
+  signOut,
 } from "../../config/firebase/firebaseConfig";
 
 const login = (user) => {
@@ -31,15 +32,23 @@ const loginWithGithub = () => {
       })
       .catch((error) => {
         console.error(error);
-        // const errorCode = error.code;
-        // const errorMessage = error.message;
-        // // The email of the user's account used.
-        // const email = error.email;
-        // // The AuthCredential type that was used.
         const credential = GithubAuthProvider.credentialFromError(error);
         console.log(credential);
       });
   };
 };
-
-export { loginWithGithub, login };
+const logout = () => {
+  return (dispatch) => {
+    signOut(auth)
+      .then(() => {
+        console.log("logout success");
+        dispatch({
+          type: types.logout,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+};
+export { loginWithGithub, login, logout };

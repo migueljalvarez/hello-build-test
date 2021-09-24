@@ -1,9 +1,9 @@
 import Router from "./routers/Router";
 const App = () => {
   return (
-    <>
-      <Router />
-    </>
+    <div>
+      <Router/>
+    </div>
   );
 };
 
