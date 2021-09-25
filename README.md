@@ -2,6 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Descriptions
+
+* This project performs login to github and obtains information from the user and their repositories.
+* Allows you to search through the repositories of the logged in user and add the repository to favorites.
+* Use Firebase to make use of OAuth and Firestore to manage the information of the favorite repositories.
+
 ## Available Scripts
 
 In the project directory, you can run:
