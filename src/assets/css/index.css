@@ -7,3 +7,35 @@ footer {
   bottom: 0 !important;
   width: 100%;
 }
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .user-info-container {
+    justify-content: center !important;
+  }
+  .user-info-profile {
+    text-align: center !important;
+  }
+  .user-info-counter {
+    justify-content: center !important;
+  }
+  #search {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .head-fav-repositories {
+    text-align: center !important;
+    margin: auto !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: baseline !important;
+  }
+  .paginate {
+    align-items: baseline !important;
+    justify-content: center !important;
+  }
+  h1 {
+    font-size: 22px;
+  }
+}
+

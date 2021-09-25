@@ -7,6 +7,7 @@ import {
   prevFavoritesList,
   removeFavoritesRepositories,
   searchRepositories,
+  searchFavoriteRepositoriesOnFirestore,
 } from "../../services/repositories";
 import Swal from "sweetalert2";
 
@@ -101,10 +102,21 @@ const searchGithubRepositories = (searchText, limit, cursor) => {
     });
   };
 };
+const searchFavoritesRepositories = (searchText, limit) => {
+  return (dispatch) => {
+    return searchFavoriteRepositoriesOnFirestore(
+      searchText,
+      limit,
+      dispatch,
+      types
+    );
+  };
+};
 export {
   getRepositories,
   addToFav,
   getFav,
   removeFav,
   searchGithubRepositories,
+  searchFavoritesRepositories,
 };

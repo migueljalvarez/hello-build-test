@@ -20,8 +20,8 @@ const Search = ({
     }
   };
   return (
-    <div className={customClass}>
-      <Form className="d-flex mx-5 w-100">
+    <div id="search" className={customClass}>
+      <Form className="d-flex w-100">
         <FormControl
           type="search"
           aria-label="Search"

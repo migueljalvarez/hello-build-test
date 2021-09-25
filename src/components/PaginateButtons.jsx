@@ -21,7 +21,7 @@ const PaginateButtons = ({
       >
         {"Prev"}
       </Button>
-      <h4>Page: {counterPages(page, totalCount, limit)}</h4>
+      <h4>{counterPages(page, totalCount, limit)}</h4>
       <Button
         variant="dark"
         className="mx-2"

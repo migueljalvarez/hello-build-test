@@ -13,19 +13,19 @@ const UserInfo = () => {
   }, [dispatch]);
 
   return (
-    <Container className="d-flex my-5 flex-wrap align-items-center">
+    <Container className="d-flex my-5 flex-wrap align-items-center user-info-container">
       <img
         className="rounded-circle py-2"
         src={user.photoURL}
         alt={user.displayName}
         style={{ width: "200px" }}
       />
-      <Container className="flex-start m-0 w-auto">
+      <Container className="flex-start m-0 w-auto user-info-profile">
         <h2>{user.displayName}</h2>
         <h4 className="text-secondary">{user.username}</h4>
         <p className="my-0">{user.bio}</p>
         <p className="my-0">{user.location}</p>
-        <Container className="d-flex p-0 ">
+        <Container className="d-flex p-0  user-info-counter">
           <p className="d-flex my-2 p-1 align-items-center">
             <FaBook size="24" style={{ margin: "0 5px" }} /> {user.repositories}
           </p>

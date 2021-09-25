@@ -205,6 +205,37 @@ const searchRepositories = async (searchText, limit, cursor) => {
   const { repositories } = data;
   return repositories;
 };
+
+const searchFavoriteRepositoriesOnFirestore = async (
+  searchText,
+  lim,
+  dispatch,
+  types
+) => {
+  const repositoryRef = collection(db, firestoreCollection);
+  const q = query(repositoryRef, orderBy("repositoryId", "asc"), limit(lim));
+
+  onSnapshot(q, async (snapshot) => {
+    const favRepositories = [];
+
+    snapshot.docs.forEach((doc) => {
+      favRepositories.push({
+        id: doc.id,
+        ...doc.data(),
+      });
+    });
+    const regexp = new RegExp(searchText, "i");
+    const docs = favRepositories.filter((doc) => regexp.test(doc.name));
+    const { size } = await getDocs(repositoryRef);
+    dispatch({
+      type: types.favRepositories,
+      payload: {
+        totalCount: size,
+        lists: docs,
+      },
+    });
+  });
+};
 export {
   addToFavoritesRepositories,
   get,
@@ -213,5 +244,6 @@ export {
   nextFavoritesList,
   prevFavoritesList,
   removeFavoritesRepositories,
+  searchFavoriteRepositoriesOnFirestore,
   searchRepositories,
 };
