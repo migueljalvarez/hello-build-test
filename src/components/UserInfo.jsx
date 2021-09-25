@@ -4,12 +4,14 @@ import { Container } from "react-bootstrap";
 import { getUser } from "../redux/actions/userAction";
 import { FaUserCheck, FaUserFriends, FaBook } from "react-icons/fa";
 
-const UserInfo = ({ repositories }) => {
+const UserInfo = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+
   useEffect(() => {
     dispatch(getUser());
   }, [dispatch]);
+
   return (
     <Container className="d-flex my-5 flex-wrap align-items-center">
       <img
@@ -25,7 +27,7 @@ const UserInfo = ({ repositories }) => {
         <p className="my-0">{user.location}</p>
         <Container className="d-flex p-0 ">
           <p className="d-flex my-2 p-1 align-items-center">
-            <FaBook size="24" style={{ margin: "0 5px" }} /> {repositories}
+            <FaBook size="24" style={{ margin: "0 5px" }} /> {user.repositories}
           </p>
           <p className="d-flex my-2 p-1 align-items-center">
             <FaUserFriends size="24" style={{ margin: "0 5px" }} />{" "}

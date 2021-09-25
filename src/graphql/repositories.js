@@ -4,8 +4,8 @@ const queryRepository = (limit, cursor) => {
       repositories(
         orderBy: {field: CREATED_AT, direction: DESC}
         first: ${limit}
-        after: ${cursor ? `"${cursor}"` : null}
-        affiliations: [OWNER, COLLABORATOR, ORGANIZATION_MEMBER]
+        after: ${JSON.stringify(cursor)}
+        affiliations: [OWNER]
       ) {
         totalCount
         pageInfo {
@@ -18,7 +18,6 @@ const queryRepository = (limit, cursor) => {
           id
           name
           description
-          forkCount
           createdAt
           url
           owner {

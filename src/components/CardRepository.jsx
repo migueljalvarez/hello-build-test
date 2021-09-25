@@ -1,7 +1,14 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
-import { FaStar, FaEye } from "react-icons/fa";
-const CardRepository = ({ repository }) => {
+import { FaStar, FaEye, FaCodeBranch } from "react-icons/fa";
+
+import { useDispatch } from "react-redux";
+import { addToFav } from "../redux/actions/repositioryAction";
+const CardRepository = ({ repository, isFavoriteRepository }) => {
+  const dispatch = useDispatch();
+  const handleFav = (data) => {
+    dispatch(addToFav(data));
+  };
   return (
     <>
       <Card className="m-2" style={{ width: "18rem", height: "15rem" }}>
@@ -19,8 +26,12 @@ const CardRepository = ({ repository }) => {
           >
             <FaEye />
           </Card.Link>
-          <Button className=" d-flex align-items-center" variant="success">
-            <FaStar />
+          <Button
+            className=" d-flex align-items-center"
+            variant="success"
+            onClick={() => handleFav(repository)}
+          >
+            <FaStar color={isFavoriteRepository ? "gold" : "white"} />
           </Button>
         </Card.Footer>
       </Card>

@@ -1,11 +1,6 @@
+import { signOut, signInWithPopup, GithubAuthProvider } from "firebase/auth";
+import { GithubProvider, auth } from "../../config/firebase/firebaseConfig";
 import { types } from "../types/types";
-import {
-  GithubProvider,
-  auth,
-  signInWithPopup,
-  GithubAuthProvider,
-  signOut,
-} from "../../config/firebase/firebaseConfig";
 
 const login = (user) => {
   return {

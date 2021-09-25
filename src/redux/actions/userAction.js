@@ -13,6 +13,7 @@ const getUser = () => {
         location: user.location,
         followers: user.followers.totalCount,
         following: user.following.totalCount,
+        repositories: user.repositories.totalCount
       },
     });
   };

@@ -4,11 +4,23 @@ const repositoriesReducer = (state = {}, action) => {
   switch (action.type) {
     case types.repositories:
       return {
-        ...action.payload
+        ...action.payload,
       };
+
     default:
       return state;
   }
 };
 
-export { repositoriesReducer };
+const favRepositoriesReducer = (state = {}, action) => {
+  switch (action.type) {
+    case types.favRepositories:
+      return {
+        ...action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+export { repositoriesReducer, favRepositoriesReducer };

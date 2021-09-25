@@ -15,6 +15,9 @@ const queryUser = (username) => {
         totalCount
       }
       location
+      repositories(ownerAffiliations:[OWNER]) {
+        totalCount
+      }
     }
   }`;
 };

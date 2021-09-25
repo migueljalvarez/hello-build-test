@@ -1,7 +1,7 @@
 import { applyMiddleware, combineReducers, createStore, compose } from "redux";
 import { authReducer } from "./reducers/authReducer";
 import thunk from "redux-thunk";
-import { repositoriesReducer } from "./reducers/repositoryReducer";
+import { favRepositoriesReducer, repositoriesReducer } from "./reducers/repositoryReducer";
 import { userReducer } from "./reducers/userReducer";
 
 const composeEnhancers =
@@ -12,6 +12,7 @@ const composeEnhancers =
 const reducers = combineReducers({
   auth: authReducer,
   repositories: repositoriesReducer,
+  favRepositories: favRepositoriesReducer,
   user: userReducer,
 });
 

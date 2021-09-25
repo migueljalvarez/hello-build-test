@@ -44,7 +44,7 @@ const Repositories = () => {
         <Container className="d-flex align-items-center justify-content-between">
           <h1>Repositories</h1>
           <h4>
-            Page: {page}/{Math.ceil(repositories.totalCount / limit)}
+            Page: {page}/{Math.ceil(repositories.totalCount / limit) || 1}
           </h4>
         </Container>
         <RepositoryLists repositories={repositories.lists} />
