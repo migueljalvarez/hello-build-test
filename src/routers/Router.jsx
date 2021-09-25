@@ -7,7 +7,7 @@ import { PrivateRouter } from "./privateRouter";
 import { PublicRouter } from "./publicRouter";
 import jwtDecode from "jwt-decode";
 import { useDispatch } from "react-redux";
-import { login, logout } from "../redux/actions/authAction";
+import { login } from "../redux/actions/authAction";
 import FavoriteReposotories from "../pages/FavoriteReposotories";
 
 const Routers = () => {
@@ -18,8 +18,6 @@ const Routers = () => {
     if (user) {
       dispatch(login(user));
     }
-  } else {
-    dispatch(logout());
   }
   return (
     <Router>

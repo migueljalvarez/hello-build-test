@@ -9,6 +9,7 @@ import {
 
 import PaginateButtons from "../components/PaginateButtons";
 import Search from "../components/Search";
+import UserInfo from "../components/UserInfo";
 
 const limit = 10;
 
@@ -52,6 +53,7 @@ const Repositories = () => {
 
   return (
     <Container className="my-5">
+      <UserInfo />
       <Container className="d-flex align-items-center justify-content-between head-fav-repositories">
         <Container className="d-flex justify-content-start">
           <h1>Repositories</h1>

@@ -23,6 +23,9 @@ const loginWithGithub = () => {
         localStorage.setItem("github-access-token", token);
         localStorage.setItem("token", user.accessToken);
         localStorage.setItem("screenName", user.reloadUserInfo.screenName);
+        return user;
+      })
+      .then((user) => {
         dispatch(login(user));
       })
       .catch((error) => {

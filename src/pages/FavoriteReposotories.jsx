@@ -7,6 +7,7 @@ import PaginateButtons from "../components/PaginateButtons";
 import { totalPages } from "../utils/counterPage";
 import Search from "../components/Search";
 import { searchFavoritesRepositories } from "../redux/actions/repositioryAction";
+import UserInfo from "../components/UserInfo";
 const limit = 10;
 
 const FavoriteReposotories = () => {
@@ -43,6 +44,7 @@ const FavoriteReposotories = () => {
   };
   return (
     <Container className="my-5">
+      <UserInfo />
       <Container className="d-flex align-items-center justify-content-between head-fav-repositories">
         <Container className="d-flex justify-content-start head-fav-repositories">
           <h1>Favorites Repositories</h1>
