@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Container } from "react-bootstrap";
 import RepositoryLists from "../components/RepositoryLists";
 import { getFav } from "../redux/actions/repositioryAction";
-import UserInfo from "../components/UserInfo";
 import PaginateButtons from "../components/PaginateButtons";
 import { totalPages } from "../utils/counterPage";
 import Search from "../components/Search";
@@ -44,8 +43,6 @@ const FavoriteReposotories = () => {
   };
   return (
     <Container className="my-5">
-      <UserInfo repositories={repositories.totalCount} />
-
       <Container className="d-flex align-items-center justify-content-between head-fav-repositories">
         <Container className="d-flex justify-content-start head-fav-repositories">
           <h1>Favorites Repositories</h1>
@@ -65,12 +62,7 @@ const FavoriteReposotories = () => {
         handleClickPrev={handlePrev}
         handleClickNext={handleNext}
         disabledPrev={page === 1}
-        disabledNext={
-          page ===
-          (typeof totalPages(repositories.totalCount, limit) === "number")
-            ? totalPages(repositories.totalCount, limit)
-            : 1
-        }
+        disabledNext={page === totalPages(repositories.totalCount, limit)}
         page={page}
         totalCount={repositories.totalCount}
         limit={limit}

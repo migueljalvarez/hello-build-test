@@ -3,6 +3,7 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/actions/authAction";
+import UserInfo from "./UserInfo";
 const NavBar = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -20,7 +21,6 @@ const NavBar = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav>
-
               <Link className="nav-link" to="/repositories">
                 Repositories
               </Link>
@@ -45,6 +45,7 @@ const NavBar = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      {isAuthenticated ? <UserInfo /> : <></>}
     </div>
   );
 };
