@@ -1,43 +1,26 @@
 import {
   addDoc,
-  getDocs,
-  getDoc,
   collection,
-  query,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
   limit,
-  startAt,
-  startAfter,
-  orderBy,
   onSnapshot,
+  orderBy,
+  query,
+  startAfter,
+  startAt,
+  where,
 } from "firebase/firestore";
 import { db } from "../config/firebase/firebaseConfig";
 import axios from "../utils/axios";
 import queryRepository from "../graphql/repositories.js";
+import searchRepository from "../graphql/search";
 const url = "https://api.github.com/graphql";
 const firestoreCollection = "Repositories";
 var firtsDocument = null;
 var lastDocument = null;
-
-const addToFavoritesRepositories = async (data) => {
-  try {
-    const repository = await addDoc(collection(db, firestoreCollection), {
-      repositoryId: data.id,
-      name: data.name,
-      description: data.description,
-      url: data.url,
-      owner: data.owner.login,
-      forkCount: data.forkCount,
-    });
-    const doc = await getDoc(repository);
-    const result = {
-      id: repository.id,
-      ...doc.data(),
-    };
-    return result;
-  } catch (error) {
-    throw error;
-  }
-};
 
 const get = async (limit, cursor) => {
   const result = await axios.post(url, {
@@ -49,8 +32,61 @@ const get = async (limit, cursor) => {
   return repositories;
 };
 
+const addToFavoritesRepositories = async (data) => {
+  try {
+    const docs = await isFavoriteRepository(data.id);
+    console.log(docs);
+    if (docs.length > 0) {
+      throw new Error("This repository was previously bookmarked");
+    } else {
+      const repository = await addDoc(collection(db, firestoreCollection), {
+        repositoryId: data.id,
+        name: data.name,
+        description: data.description,
+        url: data.url,
+        owner: data.owner.login,
+        isFav: true,
+      });
+      const doc = await getDoc(repository);
+      const result = {
+        id: repository.id,
+        ...doc.data(),
+      };
+      return result;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const isFavoriteRepository = async (id) => {
+  try {
+    const q = query(
+      collection(db, firestoreCollection),
+      where("repositoryId", "==", id)
+    );
+
+    const fav = [];
+    const result = await getDocs(q);
+    if (result.size > 0) {
+      result.docs.forEach((doc) => {
+        fav.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+      return fav;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getFavoritesRepositories = async (lim, dispatch, types) => {
   try {
+    lim = lim ? lim : 10000;
     const repositoryRef = collection(db, firestoreCollection);
     const q = query(repositoryRef, limit(lim), orderBy("repositoryId", "asc"));
 
@@ -115,7 +151,6 @@ const nextFavoritesList = async (lim, dispatch, types) => {
 
 const prevFavoritesList = async (lim, dispatch, types) => {
   try {
-    console.log(firtsDocument)
     const repositoryRef = collection(db, firestoreCollection);
     const q = query(
       repositoryRef,
@@ -148,11 +183,35 @@ const prevFavoritesList = async (lim, dispatch, types) => {
     throw error;
   }
 };
-console.log(firtsDocument)
+
+const removeFavoritesRepositories = async (id) => {
+  try {
+    const data = await deleteDoc(doc(db, firestoreCollection, id));
+    if (!data) {
+      return { deleted: true };
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const searchRepositories = async (searchText, limit, cursor) => {
+  const username = localStorage.getItem("screenName");
+  const result = await axios.post(url, {
+    query: searchRepository(username, searchText, limit, cursor),
+  });
+
+  const { data } = result.data;
+  const { repositories } = data;
+  return repositories;
+};
 export {
-  get,
   addToFavoritesRepositories,
+  get,
   getFavoritesRepositories,
+  isFavoriteRepository,
   nextFavoritesList,
   prevFavoritesList,
+  removeFavoritesRepositories,
+  searchRepositories,
 };

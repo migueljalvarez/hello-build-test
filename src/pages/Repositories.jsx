@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button } from "react-bootstrap";
-import RepositoryLists from "../components/RepositoryLists";
+import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getRepositories } from "../redux/actions/repositioryAction";
+import RepositoryLists from "../components/RepositoryLists";
+import {
+  getRepositories,
+  searchGithubRepositories,
+} from "../redux/actions/repositioryAction";
 import UserInfo from "../components/UserInfo";
+import PaginateButtons from "../components/PaginateButtons";
+import Search from "../components/Search";
+
 const limit = 10;
+
 const Repositories = () => {
   const [cursor, setCursor] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [prev, setPrev] = useState("");
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
@@ -31,7 +39,12 @@ const Repositories = () => {
       setCursor(null);
     }
   };
-
+  const handleSearch = (e) => {
+    if (e.target.value.length === 0) {
+      dispatch(getRepositories(limit, cursor));
+    }
+    setSearchTerm(e.target.value);
+  };
   useEffect(() => {
     dispatch(getRepositories(limit, cursor));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,31 +55,41 @@ const Repositories = () => {
       <UserInfo repositories={repositories.totalCount} />
       <Container>
         <Container className="d-flex align-items-center justify-content-between">
-          <h1>Repositories</h1>
-          <h4>
-            Page: {page}/{Math.ceil(repositories.totalCount / limit) || 1}
-          </h4>
+          <Container className="d-flex justify-content-start">
+            <h1>Repositories</h1>
+          </Container>
+          <Search
+            filter={searchGithubRepositories}
+            placeholder="Search repositories"
+            customClass="d-flex justify-content-center w-100"
+            handleSearch={handleSearch}
+            searchTerm={searchTerm}
+            limit={limit}
+            cursor={cursor}
+          />
+          <PaginateButtons
+            customClass="d-flex justify-content-end"
+            handleClickPrev={handlePrevCursor}
+            handleClickNext={handleNextCursor}
+            disabledPrev={!repositories.hasPrev}
+            disabledNext={!repositories.hasNext}
+            page={page}
+            totalCount={repositories.totalCount}
+            limit={limit}
+          />
         </Container>
         <RepositoryLists repositories={repositories.lists} />
       </Container>
-      <Container className="d-flex justify-content-center">
-        <Button
-          variant="dark"
-          className="m-5"
-          disabled={!repositories.hasPrev}
-          onClick={handlePrevCursor}
-        >
-          {"< Prev"}
-        </Button>
-        <Button
-          variant="dark"
-          className="m-5"
-          disabled={!repositories.hasNext}
-          onClick={handleNextCursor}
-        >
-          {"Next >"}
-        </Button>
-      </Container>
+      <PaginateButtons
+        customClass="d-flex justify-content-center py-5"
+        handleClickPrev={handlePrevCursor}
+        handleClickNext={handleNextCursor}
+        disabledPrev={!repositories.hasPrev}
+        disabledNext={!repositories.hasNext}
+        page={page}
+        totalCount={repositories.totalCount}
+        limit={limit}
+      />
     </Container>
   );
 };
