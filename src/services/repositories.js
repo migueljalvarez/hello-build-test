@@ -17,6 +17,7 @@ import { db } from "../config/firebase/firebaseConfig";
 import axios from "axios";
 import queryRepository from "../graphql/repositories.js";
 import searchRepository from "../graphql/search";
+
 const url = "https://api.github.com/graphql";
 const firestoreCollection = "Repositories";
 var firtsDocument = null;
@@ -41,10 +42,9 @@ const get = async (limit, cursor) => {
   return repositories;
 };
 
-const addToFavoritesRepositories = async (data) => {
+const addToFavoritesRepositories = async (user, data) => {
   try {
     const docs = await isFavoriteRepository(data.id);
-    console.log(docs);
     if (docs.length > 0) {
       throw new Error("This repository was previously bookmarked");
     } else {
@@ -54,6 +54,7 @@ const addToFavoritesRepositories = async (data) => {
         description: data.description,
         url: data.url,
         owner: data.owner.login,
+        uid: user.uid,
         isFav: true,
       });
       const doc = await getDoc(repository);
@@ -93,11 +94,16 @@ const isFavoriteRepository = async (id) => {
   }
 };
 
-const getFavoritesRepositories = async (lim, dispatch, types) => {
+const getFavoritesRepositories = async (user, lim, dispatch, types) => {
   try {
     lim = lim ? lim : 10000;
     const repositoryRef = collection(db, firestoreCollection);
-    const q = query(repositoryRef, limit(lim), orderBy("repositoryId", "asc"));
+    const q = query(
+      repositoryRef,
+      limit(lim),
+      orderBy("repositoryId", "asc"),
+      where("uid", "==", user.uid)
+    );
 
     onSnapshot(q, async (snapshot) => {
       const favRepositories = [];

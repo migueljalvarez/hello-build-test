@@ -1,17 +1,18 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { FaStar, FaEye } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToFav, removeFav } from "../redux/actions/repositioryAction";
 
 const CardRepository = ({ repository }) => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth);
   const handleFav = (data) => {
-    dispatch(addToFav(data));
+    dispatch(addToFav(user, data));
   };
 
   const handleRemoveFav = (data) => {
-    dispatch(removeFav(data.id));
+    dispatch(removeFav(user, data.id));
   };
 
   return (

@@ -1,7 +1,7 @@
 import { signOut, signInWithPopup, GithubAuthProvider } from "firebase/auth";
 import { GithubProvider, auth } from "../../config/firebase/firebaseConfig";
 import { types } from "../types/types";
-
+import Swal from "sweetalert2";
 const login = (user) => {
   return {
     type: types.login,
@@ -26,13 +26,19 @@ const loginWithGithub = () => {
         return user;
       })
       .then((user) => {
-        localStorage.getItem("github-access-token")
-        localStorage.getItem("token")
-        localStorage.getItem("screenName")
+        localStorage.getItem("github-access-token");
+        localStorage.getItem("token");
+        localStorage.getItem("screenName");
         dispatch(login(user));
       })
       .catch((error) => {
-        console.error(error);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Oops...",
+          text: error,
+          showConfirmButton: true,
+        });
       });
   };
 };
@@ -40,7 +46,6 @@ const logout = () => {
   return (dispatch) => {
     signOut(auth)
       .then(() => {
-        console.log("logout success");
         dispatch({
           type: types.logout,
         });

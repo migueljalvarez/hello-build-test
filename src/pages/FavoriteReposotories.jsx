@@ -16,32 +16,33 @@ const FavoriteReposotories = () => {
   const dispatch = useDispatch();
 
   const repositories = useSelector((state) => state.favRepositories);
-
+  const user = useSelector((state) => state.auth);
   const handleNext = () => {
     let currentPage = page + 1;
     const opt = "next";
-    dispatch(getFav(limit, opt));
+    dispatch(getFav(user, limit, opt));
     setPage(currentPage);
   };
 
   const handlePrev = () => {
     let currentPage = page - 1;
     const opt = "previous";
-    dispatch(getFav(limit, opt));
+    dispatch(getFav(user, limit, opt));
     setPage(currentPage);
   };
 
   useEffect(() => {
-    dispatch(getFav(limit));
+    dispatch(getFav(user, limit));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   const handleSearch = (e) => {
     if (e.target.value.length === 0) {
-      dispatch(getFav(limit));
+      dispatch(getFav(user, limit));
     }
     setSearchTerm(e.target.value);
   };
+  
   return (
     <Container className="my-5">
       <UserInfo />

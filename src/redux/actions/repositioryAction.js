@@ -27,14 +27,14 @@ const getRepositories = (limit, cursor) => {
         },
       });
     } catch (error) {
-      console.log("error")
+      console.log("error");
     }
   };
 };
 
-const addToFav = (data) => {
+const addToFav = (user, data) => {
   return () => {
-    addToFavoritesRepositories(data)
+    addToFavoritesRepositories(user, data)
       .then((favRepository) => {
         if (favRepository) {
           Swal.fire({
@@ -57,19 +57,19 @@ const addToFav = (data) => {
       });
   };
 };
-const getFav = (limit, opt) => {
+const getFav = (user, limit, opt) => {
   return (dispatch) => {
     switch (opt) {
       case "next":
-        return nextFavoritesList(limit, dispatch, types);
+        return nextFavoritesList(user, limit, dispatch, types);
       case "previous":
-        return prevFavoritesList(limit, dispatch, types);
+        return prevFavoritesList(user, limit, dispatch, types);
       default:
-        return getFavoritesRepositories(limit, dispatch, types);
+        return getFavoritesRepositories(user, limit, dispatch, types);
     }
   };
 };
-const removeFav = (id) => {
+const removeFav = (user, id) => {
   return (dispatch) => {
     removeFavoritesRepositories(id)
       .then((data) => {
@@ -81,7 +81,7 @@ const removeFav = (id) => {
             showConfirmButton: false,
             timer: 1500,
           });
-          return getFavoritesRepositories(10, dispatch, types);
+          return getFavoritesRepositories(user, 10, dispatch, types);
         }
       })
       .catch((err) => {
@@ -91,19 +91,21 @@ const removeFav = (id) => {
 };
 const searchGithubRepositories = (searchText, limit, cursor) => {
   return async (dispatch) => {
-    return searchRepositories(searchText, limit, cursor).then((repositories) => {
-      dispatch({
-        type: types.repositories,
-        payload: {
-          lists: repositories.lists,
-          startCursor: repositories.pageInfo.startCursor,
-          hasPrev: repositories.pageInfo.hasPreviousPage,
-          hasNext: repositories.pageInfo.hasNextPage,
-          endCursor: repositories.pageInfo.endCursor,
-          totalCount: repositories.totalCount,
-        },
-      });
-    });
+    return searchRepositories(searchText, limit, cursor).then(
+      (repositories) => {
+        dispatch({
+          type: types.repositories,
+          payload: {
+            lists: repositories.lists,
+            startCursor: repositories.pageInfo.startCursor,
+            hasPrev: repositories.pageInfo.hasPreviousPage,
+            hasNext: repositories.pageInfo.hasNextPage,
+            endCursor: repositories.pageInfo.endCursor,
+            totalCount: repositories.totalCount,
+          },
+        });
+      }
+    );
   };
 };
 const searchFavoritesRepositories = (searchText, limit) => {

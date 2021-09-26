@@ -6,7 +6,6 @@ const repositoriesReducer = (state = {}, action) => {
       return {
         ...action.payload,
       };
-
     default:
       return state;
   }
@@ -18,7 +17,6 @@ const favRepositoriesReducer = (state = {}, action) => {
       return {
         ...action.payload,
       };
-
     default:
       return state;
   }
