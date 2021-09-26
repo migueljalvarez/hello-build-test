@@ -26,12 +26,13 @@ const loginWithGithub = () => {
         return user;
       })
       .then((user) => {
+        localStorage.getItem("github-access-token")
+        localStorage.getItem("token")
+        localStorage.getItem("screenName")
         dispatch(login(user));
       })
       .catch((error) => {
         console.error(error);
-        const credential = GithubAuthProvider.credentialFromError(error);
-        console.log(credential);
       });
   };
 };

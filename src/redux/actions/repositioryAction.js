@@ -13,18 +13,22 @@ import Swal from "sweetalert2";
 
 const getRepositories = (limit, cursor) => {
   return async (dispatch) => {
-    const repositories = await get(limit, cursor);
-    dispatch({
-      type: types.repositories,
-      payload: {
-        lists: repositories.lists,
-        startCursor: repositories.pageInfo.startCursor,
-        hasPrev: repositories.pageInfo.hasPreviousPage,
-        hasNext: repositories.pageInfo.hasNextPage,
-        endCursor: repositories.pageInfo.endCursor,
-        totalCount: repositories.totalCount,
-      },
-    });
+    try {
+      const repositories = await get(limit, cursor);
+      dispatch({
+        type: types.repositories,
+        payload: {
+          lists: repositories.lists,
+          startCursor: repositories.pageInfo.startCursor,
+          hasPrev: repositories.pageInfo.hasPreviousPage,
+          hasNext: repositories.pageInfo.hasNextPage,
+          endCursor: repositories.pageInfo.endCursor,
+          totalCount: repositories.totalCount,
+        },
+      });
+    } catch (error) {
+      console.log("error")
+    }
   };
 };
 
@@ -87,7 +91,7 @@ const removeFav = (id) => {
 };
 const searchGithubRepositories = (searchText, limit, cursor) => {
   return async (dispatch) => {
-    searchRepositories(searchText, limit, cursor).then((repositories) => {
+    return searchRepositories(searchText, limit, cursor).then((repositories) => {
       dispatch({
         type: types.repositories,
         payload: {

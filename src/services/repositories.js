@@ -14,7 +14,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../config/firebase/firebaseConfig";
-import axios from "../utils/axios";
+import axios from "axios";
 import queryRepository from "../graphql/repositories.js";
 import searchRepository from "../graphql/search";
 const url = "https://api.github.com/graphql";
@@ -23,9 +23,18 @@ var firtsDocument = null;
 var lastDocument = null;
 
 const get = async (limit, cursor) => {
-  const result = await axios.post(url, {
-    query: queryRepository(limit, cursor),
-  });
+  const result = await axios.post(
+    url,
+    {
+      query: queryRepository(limit, cursor),
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("github-access-token")}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   const { data } = result.data;
   const { repositories } = data.viewer;
@@ -197,9 +206,18 @@ const removeFavoritesRepositories = async (id) => {
 
 const searchRepositories = async (searchText, limit, cursor) => {
   const username = localStorage.getItem("screenName");
-  const result = await axios.post(url, {
-    query: searchRepository(username, searchText, limit, cursor),
-  });
+  const result = await axios.post(
+    url,
+    {
+      query: searchRepository(username, searchText, limit, cursor),
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("github-access-token")}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   const { data } = result.data;
   const { repositories } = data;
